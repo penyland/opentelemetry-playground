@@ -1,5 +1,7 @@
 using Api;
 using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using System.Diagnostics.Metrics;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +25,17 @@ builder.Services.AddOpenTelemetry()
         builder
         .AddRuntimeInstrumentation()
         .AddProcessInstrumentation();
+    })
+    .WithTracing(builder =>
+    {
+        builder
+        .AddSource("OpenTelemetryPlayground-Api")
+        .ConfigureResource(resource =>
+            resource.AddService("OpenTelemetryPlayground-Api"))
+
+        .AddAspNetCoreInstrumentation()
+        //.AddConsoleExporter()
+        .AddOtlpExporter();
     });
 
 // Add services to the container.
