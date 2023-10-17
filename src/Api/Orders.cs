@@ -5,8 +5,8 @@ namespace Api;
 
 public class OrdersModule
 {
-    public List<Order> Orders { get; } = new();
-    public List<Product> Products { get; } = new();
+    public List<Order> Orders { get; } = [];
+    public List<Product> Products { get; } = [];
 
     private readonly string MeterName = "Api.OrderModule";
 
@@ -56,10 +56,7 @@ public class OrdersModule
         return order;
     }
 
-    public Order GetOrder(int id)
-    {
-        return Orders.FirstOrDefault(x => x.Id == id);
-    }
+    public Order? GetOrder(int id) => Orders.FirstOrDefault(x => x.Id == id);
 
     public Order? DeleteOrder(int id)
     {
@@ -79,7 +76,7 @@ public class OrdersModule
     {
         var order = Orders.FirstOrDefault(x => x.Id == orderId);
 
-        productsPerOrderHistogram.Record(order.Products.Count);
+        productsPerOrderHistogram.Record(order!.Products.Count);
     }
 }
 
